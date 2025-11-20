@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    .nui {
+        position: fixed;
+        bottom: 36px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.9);
+        border: 2px solid #916b3abe;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        max-width: 300px;
+        color: #916b3abe;
+        text-align: right;
+        display: none;
+        overflow: auto;
+    }
+
+    .nui h4 {
+        margin: 0 0 10px;
+        font-size: 26px;
+        color: #916b3abe;
+        text-align: left;
+    }
+
+    .nui p {
+        margin: 5px 0;
+        font-size: 20px;
+        text-align: left;
+    }
+
+    #jailTimer {
+        position: absolute;
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px;
+        color: #916b3abe;
+        font-family: Arial, sans-serif;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .formulario {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+        width: 500px;
+        margin: 100px auto;
+        background-color: rgba(255, 248, 220, 0.95);
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.7);
+        display: none;
+        position: relative;
+        max-height: 100vh;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-family: 'Dancing Script', cursive;
+        font-size: 70px;
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #3b2f1e;
+        padding-bottom: 10px;
+    }
+
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #a89c84;
+        background-color: #fdf6e3;
+        font-size: 15px;
+        border-radius: 4px;
+    }
+
+    button {
+        font-family: 'Courier New', Courier, monospace;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #3b2f1e;
+        color: #fff;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    button:hover {
+        background-color: #5a422a;
+    }
+
+    #cerrar, #cerrarSheriff {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .estado.pagada {
+        color: green;
+        font-weight: bold;
+    }
+
+    .estado.pendiente {
+        color: red;
+        font-weight: bold;
+    }
+
+    #multasPendientes {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    #buscadorMultas {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #a89c84;
+        background-color: #fff;
+        font-size: 15px;
+        border-radius: 4px;
+    }
+
+    .container-comisary,
+    .container-task,
+    .container-wagon, 
+    .container-cabinet,
+    .container-search,
+    .container-storage,
+    .container-hire,
+    .container-prompt {
+        position: absolute;
+        right: 2%;
+        top: 90%;
+        transform: translateY(-50%);
+        width: 150px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid rgba(156, 112, 60, 0.829);
+        border-radius: 15px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 1000;
+    }
+
+    .title-comisary,
+    .title-task,
+    .title-wagon,
+    .title-cabinet,
+    .title-search,
+    .title-storage,
+    .title-hire,
+    .title-prompt {
+        font-size: 18px;
+        font-weight: bold;
+        color: rgba(156, 112, 60, 0.829);
+        margin: 0;
+        word-wrap: break-word;
+    }
+
+    .estado.recolectada {
+        color: #8b4513;
+        font-weight: bold;
+    }
+
+    #multasPendientes::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+
+    #multasPendientes.scroll-visible::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #multasPendientes.scroll-visible::-webkit-scrollbar-thumb {
+        background-color:  #916b3a;
+        border-radius: 4px;
+        border: 2px solid #000000;
+    }
+
+    #multasPendientes.scroll-visible::-webkit-scrollbar-track {
+        background-color: #6d5b438e;
+    }
+
+    .itemMulta {
+        background-color: #fdf6e3;
+        border: 1px solid #a89c84;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .contenidoMulta {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .datosMulta {
+        line-height: 1.8;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .imagenMulta img {
+        width: 120px;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 4px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        filter: grayscale(100%) brightness(1.4);
+    }
+
+    .motivoMulta {
+        margin-top: 8px;
+        font-weight: bold;
+    }
+
+    .nombreMultado {
+        display: inline-block;
+        margin-left: 1px;
+        margin-bottom: 8px;
+    }
+
+    #motivo {
+        resize: vertical;
+        overflow-y: auto;
+        scrollbar-width: none;
+        background-color: #fff8dc;
+        max-height: 100px;
+        border: 1px solid #a89c84;
+        font-size: 15px;
+        border-radius: 4px;
+    }
+
+    #motivo::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+
+    #motivo.scroll-visible::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #motivo.scroll-visible::-webkit-scrollbar-thumb {
+        background-color: #916b3a;
+        border-radius: 4px;
+        border: 2px solid #000000;
+    }
+
+    #motivo.scroll-visible::-webkit-scrollbar-track {
+        background-color: #6d5b438e;
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class="formulario" id="formulario">
+        <span id="cerrar">✖</span>
+        <h1 id="formularioTitulo"></h1>
+        <form id="formMulta">
+            <label id="labelNombre" for="nombre"></label>
+            <input type="text" id="nombre" required>
+
+            <label id="labelApellido" for="apellido"></label>
+            <input type="text" id="apellido" required>
+
+            <label id="labelPanelID" for="id"></label>
+            <input type="text" id="id" required>
+
+            <label id="labelPanelMotivo" for="motivo"></label>
+            <textarea id="motivo" rows="3" required></textarea>
+
+            <label id="labelPanelMonto" for="monto"></label>
+            <input type="number" id="monto" min="0.01" step="0.01" required>
+
+            <label id="labelImagen" for="imagen"></label>
+            <input type="text" id="imagen" placeholder="Url image.png">
+
+            <button type="submit" id="botonRegistrar"></button>
+        </form>
+    </div>
+
+    <div class="formulario" id="panelSheriff">
+        <span id="cerrarSheriff">✖</span>
+        <h1 id="panelTitulo"></h1>
+        <input type="text" id="buscadorMultas" placeholder="">
+        <div id="multasPendientes" class="scroll-visible"></div>
+        <button onclick="recolectarMultas()" id="botonRecolectar"></button>
+    </div>
+
+    <div class="container-prompt" id="prompt">
+        <div class="title-prompt" id="promptText"></div>
+    </div>
+
+    <div class="nui" id="controlPanel">
+        <h4 id="panelTitle"></h4>
+        <div id="panelControls"></div>
+    </div>
+
+    <div id="jailTimer"></div>
+
+    <div class="container-comisary">
+        <div class="title-comisary" id="comisaryText"></div>
+    </div>
+
+    <div class="container-task">
+        <div class="title-task" id="taskText"></div>
+    </div>
+
+    <div class="container-wagon">
+        <div class="title-wagon" id="wagonText"></div>
+    </div>
+
+    <div class="container-cabinet">
+        <div class="title-cabinet" id="cabinetText"></div>
+    </div>
+
+    <div class="container-search">
+        <div class="title-search" id="searchText"></div>
+    </div>
+
+    <div class="container-storage">
+        <div class="title-storage" id="storageText"></div>
+    </div>
+
+    <div class="container-hire">
+        <div class="title-hire" id="hireText"></div>
+    </div>
+
+    <script>
+        window.addEventListener('message', function(event) {
+            const data = event.data;
+            textosGlobales = data.textos || {};
+
+            const formulario = document.getElementById('formulario');
+            const formularioTitulo = document.getElementById('formularioTitulo');
+            const labelNombre = document.getElementById('labelNombre');
+            const labelApellido = document.getElementById('labelApellido');
+            const labelPanelID = document.getElementById('labelPanelID');
+            const labelPanelMotivo = document.getElementById('labelPanelMotivo');
+            const labelPanelMonto = document.getElementById('labelPanelMonto');
+            const labelImagen = document.getElementById('labelImagen');
+            const botonRegistrar = document.getElementById('botonRegistrar');
+            const formMulta = document.getElementById('formMulta');
+            const panelSheriff = document.getElementById('panelSheriff');
+            const panelTitulo = document.getElementById('panelTitulo');
+            const buscadorMultas = document.getElementById('buscadorMultas');
+            const botonRecolectar = document.getElementById('botonRecolectar');
+            const multasPendientes = document.getElementById('multasPendientes');
+            const prompt = document.getElementById('prompt');
+            const promptText = document.getElementById('promptText');
+
+            const controlPanel = document.getElementById('controlPanel');
+            const panelTitle = document.getElementById('panelTitle');
+            const panelControls = document.getElementById('panelControls');
+
+            const timer = document.getElementById('jailTimer');
+            const comisary = document.querySelector('.container-comisary');
+            const task = document.querySelector('.container-task');
+            const wagon = document.querySelector('.container-wagon');
+            const cabinet = document.querySelector('.container-cabinet');
+            const search = document.querySelector('.container-search');
+            const storage = document.querySelector('.container-storage');
+            const hire = document.querySelector('.container-hire');
+            const comisaryText = document.getElementById('comisaryText');
+            const taskText = document.getElementById('taskText');
+            const wagonText = document.getElementById('wagonText');
+            const cabinetText = document.getElementById('cabinetText');
+            const searchText = document.getElementById('searchText');
+            const storageText = document.getElementById('storageText');
+            const hireText = document.getElementById('hireText');
+
+            if (textosGlobales) {
+                formularioTitulo.textContent = textosGlobales.formularioTitulo || '';
+                labelNombre.textContent = textosGlobales.labelNombre || '';
+                labelApellido.textContent = textosGlobales.labelApellido || '';
+                labelPanelID.textContent = textosGlobales.labelPanelID || '';
+                labelPanelMotivo.textContent = textosGlobales.labelPanelMotivo || '';
+                labelPanelMonto.textContent = textosGlobales.labelPanelMonto || '';
+                labelImagen.textContent = textosGlobales.labelImagen || '';
+                botonRegistrar.textContent = textosGlobales.botonRegistrar || '';
+                panelTitulo.textContent = textosGlobales.panelTitulo || '';
+                buscadorMultas.placeholder = textosGlobales.buscadorPlaceholder || '';
+                botonRecolectar.textContent = textosGlobales.botonRecolectar || '';
+            }
+
+            if (data.action === "showpanel") {
+                controlPanel.style.display = 'block';
+                panelTitle.textContent = data.title;
+                panelControls.innerHTML = "";
+                if (data.controls && Array.isArray(data.controls)) {
+                    data.controls.forEach(ctrl => {
+                        const p = document.createElement('p');
+                        p.textContent = ctrl;
+                        panelControls.appendChild(p);
+                    });
+                }
+            } else if (data.action === "hidepanel") {
+                controlPanel.style.display = 'none';
+            }
+
+            if (data.type === 'updateJailTime') {
+                timer.style.display = 'block';
+                timer.textContent = `${data.text || ''}: ${data.time}s`;
+            }
+
+            if (data.type === 'hideJailTime') {
+                timer.style.display = 'none';
+            }
+
+            if (data.type === 'showComisary') {
+                comisaryText.textContent = data.text || '';
+                comisary.style.display = 'block';
+            }
+
+            if (data.type === 'hideComisary') {
+                comisary.style.display = 'none';
+            }
+
+            if (data.type === 'showTask') {
+                taskText.textContent = data.text || '';
+                task.style.display = 'block';
+            }
+
+            if (data.type === 'hideTask') {
+                task.style.display = 'none';
+            }
+
+            if (data.type === 'showWagon') {
+                wagonText.textContent = data.text || '';
+                wagon.style.display = 'block';
+            }
+
+            if (data.type === 'hideWagon') {
+                wagon.style.display = 'none';
+            }
+
+            if (data.type === 'showCabinet') {
+                cabinetText.textContent = data.text || '';
+                cabinet.style.display = 'block';
+            }
+
+            if (data.type === 'hideCabinet') {
+                cabinet.style.display = 'none';
+            }
+
+            if (data.type === 'showSearch') {
+                searchText.textContent = data.text || '';
+                search.style.display = 'block';
+            }
+
+            if (data.type === 'hideSearch') {
+                search.style.display = 'none';
+            }
+
+            if (data.type === 'showStorage') {
+                storageText.textContent = data.text || '';
+                storage.style.display = 'block';
+            }
+
+            if (data.type === 'hideStorage') {
+                storage.style.display = 'none';
+            }
+
+            if (data.type === 'showHire') {
+                hireText.textContent = data.text || '';
+                hire.style.display = 'block';
+            }
+
+            if (data.type === 'hideHire') {
+                hire.style.display = 'none';
+            }
+
+            if (data.action === 'abrirFormulario') {
+                formMulta.reset();
+                formulario.style.display = 'block';
+                document.getElementById('motivo').classList.add('scroll-visible');
+            }
+
+            if (data.action === 'abrirPanelSheriff') {
+                panelSheriff.style.display = 'block';
+            }
+
+            if (data.action === 'actualizarMultas') {
+                renderMultas(data.multas || []);
+            }
+
+            if (data.type === 'showprompt') {
+                promptText.textContent = data.text || '';
+                prompt.style.display = 'block';
+            }
+
+            if (data.type === 'hideprompt') {
+                prompt.style.display = 'none';
+            }
+
+        });
+       
+        function renderMultas(todasLasMultas) {
+            const multasPendientes = document.getElementById('multasPendientes');
+            const buscadorMultas = document.getElementById('buscadorMultas');
+            multasPendientes.innerHTML = '';
+
+            function filtrarYMostrar(filtro = '') {
+                multasPendientes.innerHTML = '';
+                const filtroLower = filtro.toLowerCase();
+
+                todasLasMultas.forEach(multa => {
+                    const nombreCompleto = `${multa.nombre} ${multa.apellido}`.toLowerCase();
+                    if (!nombreCompleto.includes(filtroLower)) return;
+
+                    const estadoTexto = multa.recolectada == 1
+                        ? textosGlobales.estadoRecolectada || ''
+                        : (parseInt(multa.pagada) === 1
+                            ? textosGlobales.estadoPagada || ''
+                            : textosGlobales.estadoPendiente || '');
+
+                    const estadoClase = multa.recolectada == 1
+                        ? 'recolectada'
+                        : (parseInt(multa.pagada) === 1 ? 'pagada' : 'pendiente');
+                    
+                    const div = document.createElement('div');
+                    div.className = 'itemMulta';
+                    div.dataset.id = multa.id;
+
+                    div.innerHTML = `
+                        <div class="contenidoMulta">
+                            <div class="datosMulta">
+                                <strong class="nombreMultado">${textosGlobales.multadoLabel || ""} ${multa.nombre} ${multa.apellido}</strong><br>
+                                ${textosGlobales.labelID || ""} ${multa.id_multado}<br>
+                                ${textosGlobales.labelMonto || ""} ${multa.monto}$<br>
+                                ${textosGlobales.autorLabel || ""} ${multa.autor}<br>
+                                ${textosGlobales.estadoLabel || ""} <span class="estado ${estadoClase}">${estadoTexto}</span>
+                            </div>
+                            ${multa.imagen ? `<div class="imagenMulta"><img src="${multa.imagen}" alt="Imagen multa"></div>` : ''}
+                        </div>
+                        <div class="motivoMulta">
+                            ${textosGlobales.labelMotivo || ""} ${multa.motivo}
+                        </div>
+                    `;
+
+                    if (multa.recolectada == 1) {
+                        div.innerHTML += `<br><button onclick="eliminarMulta(${multa.id})">${textosGlobales.botonEliminar || ''}</button>`;
+                    }
+
+                    if (parseInt(multa.pagada) === 0 && parseInt(multa.recolectada) === 0) {
+                        div.innerHTML += `<br><button onclick="eliminarMultaPendiente(${multa.id})">${textosGlobales.botonEliminarPendiente || ''}</button>`;
+                    }
+
+                    multasPendientes.appendChild(div);
+                });
+            }
+
+            filtrarYMostrar();
+
+            buscadorMultas.addEventListener('input', function() {
+                filtrarYMostrar(this.value);
+            });
+        }
+
+        document.getElementById('cerrar').addEventListener('click', function() {
+            document.getElementById('formulario').style.display = 'none';
+            document.getElementById('formMulta').reset();
+            fetch(`https://${GetParentResourceName()}/cerrarFormulario`, { method: 'POST' });
+        });
+
+        document.getElementById('cerrarSheriff').addEventListener('click', function() {
+            document.getElementById('panelSheriff').style.display = 'none';
+            fetch(`https://${GetParentResourceName()}/cerrarSheriff`, { method: 'POST' });
+        });
+
+        document.getElementById('formMulta').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
+                id: document.getElementById('id').value,
+                motivo: document.getElementById('motivo').value,
+                monto: parseFloat(document.getElementById('monto').value),
+                imagen: document.getElementById('imagen').value
+            };
+
+            fetch(`https://${GetParentResourceName()}/registrarMulta`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+
+            document.getElementById('formMulta').reset();
+            document.getElementById('formulario').style.display = 'none';
+        });
+
+        function recolectarMultas() {
+            fetch(`https://${GetParentResourceName()}/recolectarMultas`, {
+                method: 'POST'
+            });
+            document.getElementById('panelSheriff').style.display = 'none';
+        }
+
+        function eliminarMulta(id) {
+            fetch(`https://${GetParentResourceName()}/eliminarMulta`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+
+            const multaElemento = document.querySelector(`.itemMulta[data-id="${id}"]`);
+            if (multaElemento) { 
+                multaElemento.remove();
+            }
+        }
+
+        function eliminarMultaPendiente(id) {
+            fetch(`https://${GetParentResourceName()}/eliminarMultaPendiente`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+        }
+    </script>
+</body>
+</html>
