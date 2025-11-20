@@ -63,6 +63,8 @@ In rs_police, the rs_fines script is already integrated. If you use rs_police, y
 
 <img width="962" height="975" alt="image" src="https://github.com/user-attachments/assets/86cca889-d51f-4c94-9cf0-449f593b4b0c" />
 
+For images url, I recommend using https://postimages.org/ since Discord links expire.
+
 <img width="494" height="791" alt="image" src="https://github.com/user-attachments/assets/07df4864-884d-4d9d-8db5-289b089dc1a1" />
 
 <img width="967" height="1024" alt="image" src="https://github.com/user-attachments/assets/0fd780c5-5ccd-4a48-b1b7-69b2aa3aaedd" />
