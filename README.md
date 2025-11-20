@@ -44,6 +44,9 @@ If you’re an admin, you can open the sheriff menu using the key or command wit
 12 - rs_fines integrated into the script
 In rs_police, the rs_fines script is already integrated. If you use rs_police, you don’t need to add the configurable rs_fines script to your server in the config folder, in the ConfigFines.lua file.
 
+13 - Option to add your Sheriff badges
+In the configmain.lua you have the option to add your custom Sheriff badge models
+
 # ------------------------------------------------------ #
 <img width="506" height="745" alt="image" src="https://github.com/user-attachments/assets/8f52c53e-5d27-401f-90c4-b181fcc8a93e" />
 
@@ -68,3 +71,6 @@ In rs_police, the rs_fines script is already integrated. If you use rs_police, y
 <img width="494" height="791" alt="image" src="https://github.com/user-attachments/assets/07df4864-884d-4d9d-8db5-289b089dc1a1" />
 
 <img width="967" height="1024" alt="image" src="https://github.com/user-attachments/assets/0fd780c5-5ccd-4a48-b1b7-69b2aa3aaedd" />
+
+<img width="1292" height="736" alt="image" src="https://github.com/user-attachments/assets/6fa6412d-abe1-464b-9d36-23d031f23475" />
+
