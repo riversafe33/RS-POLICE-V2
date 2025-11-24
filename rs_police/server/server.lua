@@ -240,7 +240,11 @@ AddEventHandler('rs_police:getVehicleInfo', function(player, mount)
     elseif sqlTable == "player_horses" then
         columns.charid = "charid"
         columns.model = "model"
-        columns.name = "name"      
+        columns.name = "name"  
+    elseif sqlTable == "kd_horses" then
+        columns.charid = "charid"
+        columns.model = "model"
+        columns.name = "name"          
     end
 
     exports.oxmysql:execute("SELECT * FROM `" .. sqlTable .. "` WHERE " .. columns.charid .. "=@identifier",
