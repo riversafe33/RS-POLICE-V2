@@ -198,6 +198,7 @@ ConfigMain.CheckHorse = true
 -- rsd_stable   -- "rsd_horses" 
 -- vorp_stables -- "stables"
 -- bcc-stables  -- "player_horses"
+-- kd_stables   -- "kd_horses"
 ConfigMain.SQLTable = "stables"
 
 ConfigMain.jobRequired = true
