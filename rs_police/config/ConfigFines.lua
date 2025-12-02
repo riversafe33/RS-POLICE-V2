@@ -82,6 +82,7 @@ ConfigFines.Textos = {
     labelMonto = "Amount:",
     autorLabel = "Author:",
     estadoLabel = "Status:",
+    menutitle = "Pending Fines",
     menuamount = "Fine in the amount of ",
     menureason = "Pending´s fines",
     botonEliminar = "Delete",
